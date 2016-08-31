@@ -26,7 +26,7 @@ router.route('/:id')
   })
 })
 
-router.delete('/:id', (req, res) =>{
+router.delete('/:id', Album.RemoveMiddleware, (req, res) =>{
   Album.findByIdAndRemove(req.params.id, err =>{
     if(err) return res.status(400).send(err)
     Album.find({}, (err, albums) =>{
