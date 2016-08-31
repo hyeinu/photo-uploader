@@ -15,11 +15,13 @@ router.route('/')
   })
 
 router.delete('/:id', (req, res) =>{
-  Image.findByIdAndRemove(req.params.id, err =>{
+  Image.findById(req.params.id, (err, image) =>{
     if(err) return res.status(400).send(err)
+    image.remove()
     res.send()
-  })
+  });
 })
+
 router.get('/:id', (req, res) =>{
   Image.findById(req.params.id, (err, image) =>{
     res.status(err ? 400 : 200).send(err || image)

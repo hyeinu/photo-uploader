@@ -35,17 +35,22 @@ imageSchema.statics.upload = function(fileObj, cb){
 
 imageSchema.pre('remove', function(next) {
   let id = this._id;
+  let Key = this.s3_key;
+
   let params = {
     Bucket: BUCKET_NAME,
-    Key: this.s3_key
-  }
+    Key
+  };
 
-  s3.deleteObjects(params, err =>{
+  s3.deleteObject(params, (err, result) =>{
    if (err) return next(err)
 
-    mongoose.model('Album').find({ images: id }, err =>{
-      album.images.filter(image => image.toString() !== id.toString())
-      album.save(err =>{
+    mongoose.model('Album').find({ images: mongoose.Types.ObjectId(`${id}`) }, (err, albums) =>{
+        console.log('albums:', albums)
+      let newAlbum = albums[0]
+
+      newAlbum.images = newAlbum.images.filter(image => image.toString() !== id.toString())
+      newAlbum.save(err =>{
         next();
       });
     })
