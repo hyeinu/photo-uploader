@@ -42,7 +42,7 @@ const API = {
   addImage(id, file){
     let data = new FormData();
     data.append('image', file)
-
+    
     axios.post(`/api/images/${id}/addPic`, data)
       .then(() => {
       this.getAlbum(id)

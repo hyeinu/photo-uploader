@@ -46,7 +46,6 @@ imageSchema.pre('remove', function(next) {
    if (err) return next(err)
 
     mongoose.model('Album').find({ images: mongoose.Types.ObjectId(`${id}`) }, (err, albums) =>{
-        console.log('albums:', albums)
       let newAlbum = albums[0]
 
       newAlbum.images = newAlbum.images.filter(image => image.toString() !== id.toString())
