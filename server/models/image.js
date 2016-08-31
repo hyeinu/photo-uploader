@@ -1,8 +1,16 @@
+const BUCKET_NAME = 'hyeinu-pb-album-loader';
+const AWS_URL_BASE = 'https://s3-us-west-2.amazonaws.com';
+
 const mongoose = require('mongoose')
+const AWS = require('aws-sdk');
+const uuid = require('uuid');
+const path = require('path');
+
+const s3 = new AWS.S3();
 
 const imageSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  pic_url: { type: String, required: true },
+  url: { type: String, required: true },
   s3_key: { type: String, required: true },
   time: { type: Date, default: Date.now }
 })
@@ -26,8 +34,22 @@ imageSchema.statics.upload = function(fileObj, cb){
 };
 
 imageSchema.pre('remove', function(next) {
-  this.model('Album').remove({ images: this._id }, next)
+  let id = this._id;
+  let params = {
+    Bucket: BUCKET_NAME,
+    Key: this.s3_key
+  }
 
+  s3.deleteObjects(params, err =>{
+   if (err) return next(err)
+
+    mongoose.model('Album').find({ images: id }, err =>{
+      album.images.filter(image => image.toString() !== id.toString())
+      album.save(err =>{
+        next();
+      });
+    })
+  })
 });
 
 const Image = mongoose.model('Image', imageSchema);

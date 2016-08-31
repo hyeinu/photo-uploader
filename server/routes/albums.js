@@ -14,6 +14,18 @@ router.route('/')
     })
   })
 
+router.route('/:id')
+  .get((req, res) =>{
+    Album.findById(req.params.id , (err, album) =>{
+      res.status(err ? 400: 200).send(err || album);
+    }).populate('images')
+  })
+  .put((req, res) =>{
+  Album.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true}, (err, album) =>{
+    res.status(err ? 400: 200).send(err || album);
+  })
+})
+
 router.delete('/:id', (req, res) =>{
   Album.findByIdAndRemove(req.params.id, err =>{
     if(err) return res.status(400).send(err)

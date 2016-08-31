@@ -10,6 +10,7 @@ const API = {
       .catch(console.error)
   },
   getAlbum(id){
+    console.log('id:', id)
     axios.get(`/api/albums/${id}`)
       .then(res => res.data)
       .then(ServerActions.getAlbum)
@@ -38,11 +39,14 @@ const API = {
     })
     .catch(console.error)
   },
-  addImage(id, obj){
-    axios.post(`/api/images/${id}/addPic`, obj)
-    .then(() => {
+  addImage(id, file){
+    let data = new FormData();
+    data.append('image', file)
+
+    axios.post(`/api/images/${id}/addPic`, data)
+      .then(() => {
       this.getAlbum(id)
-      RouteActions.route(`/albums/${id}`)
+      RouteActions.route(`/album/${id}`)
     })
     .catch(console.error)
   },

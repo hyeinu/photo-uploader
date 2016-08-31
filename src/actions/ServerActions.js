@@ -14,6 +14,7 @@ const ServerActions = {
     })
   },
   getImage(image){
+    console.log('image:', image)
     AppDispatcher.dispatch({
       type: 'RECIEVE_IMAGE',
       image

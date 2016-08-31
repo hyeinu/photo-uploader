@@ -6,6 +6,7 @@ const UserActions = {
   getImage: API.getImage,
   deleteImage: API.deleteImage,
   addImage: API.addImage,
+  addAlbum: API.addAlbum,
   deleteAlbum: API.deleteAlbum,
   editAlbum: API.editAlbum
 }

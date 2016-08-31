@@ -29,17 +29,16 @@ export default class AlbumRow extends Component {
   }
   render() {
     let { image } = this.state
-    console.log('image:', image)
   if(!image){
     return(
       <h1>Loading</h1>
     )
   } else{
     return (
-      <div>
-      <img src={image.pic_url} className="img-rounded"/>
-      <h3>{image.time}</h3>
-      <button onClick={this._delete.bind(null, image._id)} className="btn">Delete</button>
+      <div className="col-xs-4">
+        <img src={image.url} className="img-rounded img-responsive"/>
+        <h4>{image.time}</h4>
+        <button onClick={this._delete.bind(null, image._id)} className="btn form-control btn-danger">Delete</button>
       </div>
     )
     }
