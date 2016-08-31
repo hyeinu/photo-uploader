@@ -27,15 +27,14 @@ albumSchema.statics.RemoveMiddleware = function(req, res, next){
       next();
     }
     async.each(images, (image, asynCb) => {
-      mongoose.model('Image').findById(image, (err, imgdoc) =>{
-        imgdoc.remove();
+      mongoose.model('Image').findByIdAndRemove(image, (err) =>{
         asynCb();
       });
     }, (err) => {
       if (err) res.status(400).send(err)
       next();
     });
-    next();
+    // next();
   });
 };
 
